@@ -22,20 +22,11 @@ module.exports.sendmail = async (req, res) => {
 
     const { orderItems, order_id } = req.body;
 
-    console.log(orderItems, order_id);
     const responseOrderModel = await orderModel.findOne({ _id: order_id })
 
     const { address, _id, order_status, payment_type, user } = responseOrderModel;
-    // const responseOrderItem = await orderItems.findOne({ _id: order_id })
-    console.log('responseOrderModel', responseOrderModel)
-    // console.log('responseOrderItem', responseOrderItem)
-
-    // const { user_id } = req.body[0];
-    // console.log(user_id, order_id)
 
     const infoUserId = await userModel.findOne({ _id: user })
-    console.log(infoUserId)
-
     const newOrderList = [...orderItems];
 
     try {

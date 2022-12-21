@@ -8,5 +8,6 @@ ratingRouter.get("/all", RatingControllers.queryAllRates);
 ratingRouter.get("/", RatingControllers.queryRates);
 ratingRouter.get("/bought", RatingControllers.getIsBought);
 ratingRouter.post("/", auth(USER), RatingControllers.createRate);
+ratingRouter.delete("/:_id", RatingControllers.removeRate);
 
 module.exports = ratingRouter;

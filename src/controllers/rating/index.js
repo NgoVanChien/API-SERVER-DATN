@@ -50,6 +50,24 @@ class RatingControllers {
     }
   }
 
+
+  async removeRate(req, res, next) {
+    try {
+      const { _id } = req.params;
+      DTO.removeRate(_id);
+      const response = await RatingHandlers.deleteRate(_id);
+
+      if (response.status === ERROR) return next(response.response);
+
+      return res.json(response.response);
+    } catch (error) {
+      return next(
+        new HttpException(error.status || 500, catchRoutesError(error))
+      );
+    }
+  }
+
+
   async getIsBought(req, res, next) {
     try {
       const params = DTO.getIsBought(req.query);

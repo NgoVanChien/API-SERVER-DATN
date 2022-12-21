@@ -181,6 +181,28 @@ class RatingHandlers {
       },
     };
   }
+
+  async deleteRate(_id) {
+    try {
+      const result = await RatingModel.deleteOne({ _id });
+      if (!result || result === "null")
+        return {
+          status: ERROR,
+          response: new HttpException(400, "Can not remove rate!"),
+        };
+
+      return {
+        status: SUCCESS,
+        response: {
+          status: OK,
+          message: "Remove rate successfully!",
+        },
+      };
+    } catch (error) {
+      catchHandlerError(error)
+    }
+
+  }
 }
 
 module.exports = new RatingHandlers();

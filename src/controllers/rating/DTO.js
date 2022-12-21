@@ -25,6 +25,20 @@ class DTO {
     return { product_id, user, stars, content };
   }
 
+  removeRate(_id) {
+    const schema = Joi.object({
+      _id: Joi.string().alphanum().required(),
+    });
+
+    const { error } = schema.validate({
+      _id,
+    });
+
+    catchValidateError(error);
+
+    return _id;
+  }
+
   queryRates(params) {
     const { product_id } = params || {};
 
