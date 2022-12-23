@@ -68,6 +68,22 @@ class BrandControllers {
       );
     }
   }
+
+  async getAllBrand(req, res, next) {
+    try {
+      const response = await BrandHandlers.getAllBrand();
+
+      if (response.status === ERROR) return next(response.response);
+      return res.json(response.response);
+
+    } catch (error) {
+      return next(
+        new HttpException(error.status || 500, catchRoutesError(error))
+      );
+    }
+
+  }
+
 }
 
 module.exports = new BrandControllers();

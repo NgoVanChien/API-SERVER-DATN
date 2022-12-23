@@ -5,6 +5,7 @@ const auth = require("../middlewares/auth");
 const categoryRouter = Router();
 
 categoryRouter.get("/", CategoryControllers.queryCategories);
+categoryRouter.get("/all", CategoryControllers.getAllCategory);
 
 categoryRouter.delete("/:_id", auth(ADMIN), CategoryControllers.removeCategory);
 categoryRouter.put("/:_id", auth(ADMIN), CategoryControllers.updateCategory);

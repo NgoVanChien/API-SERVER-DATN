@@ -5,6 +5,7 @@ const auth = require("../middlewares/auth");
 const brandRouter = Router();
 
 brandRouter.get("/", BrandControllers.queryBrands);
+brandRouter.get("/all", BrandControllers.getAllBrand);
 
 brandRouter.delete("/:_id", auth(ADMIN), BrandControllers.removeBrand);
 brandRouter.put("/:_id", auth(ADMIN), BrandControllers.updateBrand);

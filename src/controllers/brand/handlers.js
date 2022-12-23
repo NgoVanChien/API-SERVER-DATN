@@ -27,6 +27,31 @@ class BrandHandlers {
     }
   }
 
+  async getAllBrand() {
+    try {
+      const result = await BrandModel.find();
+      console.log('result', result);
+      if (!result || result === 'null')
+        return {
+          status: ERROR,
+          response: new HttpException(400, 'Can not create brand!'),
+        };
+
+      return {
+        status: SUCCESS,
+        response: {
+          status: OK,
+          message: 'Create brand successfully!',
+          data: result,
+        },
+      };
+
+    } catch (error) {
+      return catchHandlerError(error);
+
+    }
+  }
+
   async updateBrand(_id, newData) {
     try {
       const query = { _id };

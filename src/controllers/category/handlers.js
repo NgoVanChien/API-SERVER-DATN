@@ -123,6 +123,30 @@ class BrandHandlers {
       return catchHandlerError(error);
     }
   }
+
+  async getAllCategry() {
+    try {
+      const result = await CategoryModel.find();
+      if (!result || result === 'null')
+        return {
+          status: ERROR,
+          response: new HttpException(400, 'Can not create category!'),
+        };
+
+      return {
+        status: SUCCESS,
+        response: {
+          status: OK,
+          message: 'Create category successfully!',
+          data: result,
+        },
+      };
+
+    } catch (error) {
+      return catchHandlerError(error);
+
+    }
+  }
 }
 
 module.exports = new BrandHandlers();
