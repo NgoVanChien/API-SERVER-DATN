@@ -20,10 +20,8 @@ function concatAdress(addressObj) {
 
 module.exports.sendmail = async (req, res) => {
 
-    const { orderItems, order_id } = req.body;
-
+    const { orderItems, order_id, totalAmount } = req.body;
     const responseOrderModel = await orderModel.findOne({ _id: order_id })
-
     const { address, _id, order_status, payment_type, user } = responseOrderModel;
 
     const infoUserId = await userModel.findOne({ _id: user })
@@ -46,7 +44,7 @@ module.exports.sendmail = async (req, res) => {
         })
 
         const htmlHead = '<table style="width:50%">' +
-            '<tr style="border: 1px solid black;"><th style="border: 1px solid black;">Tên Sản Phẩm</th><th style="border: 1px solid black;">Hình Ảnh</th><th style="border: 1px solid black;">Giá</th><th style="border: 1px solid black;">Số Lượng</th><th style="border: 1px solid black;">Thành Tiền</th>'
+            '<tr style="border: 1px solid black;"><th style="border: 1px solid black;">Tên Sản Phẩm</th><th style="border: 1px solid black;">Hình Ảnh</th><th style="border: 1px solid black;">Giá</th><th style="border: 1px solid black;">Số Lượng</th><th style="border: 1px solid black;">Thành Tiền (đã áp dụng khuyến mãi (nếu có))</th>'
 
         let htmlContent = ""
 
@@ -60,7 +58,7 @@ module.exports.sendmail = async (req, res) => {
         }
 
         const htmlResult = '<h2>Xin Chào: ' + fullname + '</h2>' + '<h3> Địa chỉ giao hàng: ' + addressRender + '</h3>' + '<h3> Hình thức thanh toán: ' + payment_type + '</h3>' + '<h3> Chi tiết đơn hàng: </h3>' +
-            htmlHead + htmlContent + '<h2>Tổng Thanh Toán: ' + formatPrice(total) + '</br>' + '<p>Cảm ơn bạn!</p>'
+            htmlHead + htmlContent + '<h2>Tổng Thanh Toán (đã áp dụng tất cả khuyến mãi): ' + formatPrice(totalAmount) + '</br>' + '<p>Cảm ơn bạn!</p>'
 
         // Thực hiện gửi email (to, subject, htmlContent)
         await mailer.sendMail(to, subject, htmlResult)
