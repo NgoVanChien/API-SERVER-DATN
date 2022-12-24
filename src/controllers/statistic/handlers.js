@@ -10,15 +10,14 @@ const UserModel = require('../../models/user.model');
 const BrandModel = require('../../models/brand.model');
 class StatisticHandlers {
   async getStatistic(params) {
-    const { formDate, toDate } = params;
-    console.log(formDate, toDate);
+    const { fromDate, toDate } = params;
     try {
       const brandStatistic = await BrandModel.aggregate([
         {
           $match: {
             createdAt: {
-              $gte: formDate,
-              $lte: toDate
+              $gte: new Date(fromDate),
+              $lte: new Date(toDate)
             }
           }
         },
@@ -50,13 +49,11 @@ class StatisticHandlers {
         },
       ]);
 
-      console.log('brandStatistic', brandStatistic);
-
       const totalUsersInMonth = await UserModel.find({
         // createdAt: {
         //   $gte: new Date(new Date().getTime() - 30 * 24 * 60 * 60 * 1000),
         // },
-        createdAt: { $gte: new Date(formDate).toISOString(), $lt: new Date(toDate).toISOString() }
+        createdAt: { $gte: new Date(fromDate), $lte: new Date(toDate) }
 
       });
 
@@ -65,7 +62,7 @@ class StatisticHandlers {
         // createdAt: {
         //   $gte: new Date(new Date().getTime() - 30 * 24 * 60 * 60 * 1000),
         // },
-        createdAt: { $gte: new Date(formDate).toISOString(), $lt: new Date(toDate).toISOString() }
+        createdAt: { $gte: new Date(fromDate), $lte: new Date(toDate) }
       });
 
       let totalAmountInMonth;
@@ -82,12 +79,12 @@ class StatisticHandlers {
           : 0;
       }
 
-      const topSold = await ProductModel.find({ sold: { $gt: 0 } })
+      const topSold = await ProductModel.find({ sold: { $gt: 0 }, createdAt: { $gte: new Date(fromDate), $lte: new Date(toDate) } })
         .sort({ sold: -1 })
         .skip(0)
         .limit(16);
 
-      const topRate = await ProductModel.find({ rate: { $gt: 0 } })
+      const topRate = await ProductModel.find({ rate: { $gt: 0 }, createdAt: { $gte: new Date(fromDate), $lte: new Date(toDate) } })
         .sort({ rate: -1 })
         .skip(0)
         .limit(16);
