@@ -22,7 +22,7 @@ class DTO {
     } = data || {};
 
     const schema = Joi.object({
-      _id: Joi.string().alphanum().min(1).required(),
+      _id: Joi.string().alphanum().min(1),
       name: Joi.string().min(1),
       categories: Joi.array().min(1).items(Joi.string().alphanum().min(1)),
       brand: Joi.string().alphanum().min(1).required(),

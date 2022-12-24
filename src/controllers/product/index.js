@@ -69,6 +69,20 @@ class ProductControllers {
     }
   }
 
+  async getAllProduct(req, res, next) {
+    try {
+      const response = await ProductHandlers.getAllProduct();
+      if (response.status === ERROR) return next(response.response);
+      return res.json(response.response);
+
+    } catch (error) {
+      return next(
+        new HttpException(error.status || 500, catchRoutesError(error))
+      );
+    }
+
+  }
+
   async getOneProduct(req, res, next) {
     try {
       const { slug } = req.params;
@@ -83,6 +97,8 @@ class ProductControllers {
       );
     }
   }
+
+
 }
 
 module.exports = new ProductControllers();

@@ -6,7 +6,9 @@ const { OK, ERROR } = require("../../configs/constants");
 class StatisticControllers {
   async getStatistic(req, res, next) {
     try {
-      const response = await StatisticHandlers.getStatistic();
+      const body = req.body;
+
+      const response = await StatisticHandlers.getStatistic(body);
 
       if (response.status === ERROR) return next(response.response);
 

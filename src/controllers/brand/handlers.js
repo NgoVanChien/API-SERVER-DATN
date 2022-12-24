@@ -30,7 +30,6 @@ class BrandHandlers {
   async getAllBrand() {
     try {
       const result = await BrandModel.find();
-      console.log('result', result);
       if (!result || result === 'null')
         return {
           status: ERROR,

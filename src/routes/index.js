@@ -19,7 +19,8 @@ const saleRouter = require('./sale.router');
 const mailerRouter = require('./mailer.route');
 const favoriteProductRouter = require('./favorite_product.router');
 const checkoutMomoRouter = require('./checkout_momo.router')
-const messengerRouter = require('./messenger.router')
+const messengerRouter = require('./messenger.router');
+const StatictisRouter = require('./static.model');
 
 
 const ENDPOINT = process.env.API_ENDPOINT || '/api/v1';
@@ -58,7 +59,7 @@ const routes = (app) => {
   app.use(
     `${ENDPOINT}/statistic`,
     auth(ADMIN),
-    StatisticControllers.getStatistic
+    StatictisRouter
   );
   app.get(`${ENDPOINT}/verify/:access_token`, SignControllers.verify);
 };

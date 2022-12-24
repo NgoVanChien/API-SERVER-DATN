@@ -9,9 +9,19 @@ const OrderItemModel = require('../../models/order_item.model');
 const UserModel = require('../../models/user.model');
 const BrandModel = require('../../models/brand.model');
 class StatisticHandlers {
-  async getStatistic() {
+  async getStatistic(params) {
+    const { formDate, toDate } = params;
+    console.log(formDate, toDate);
     try {
       const brandStatistic = await BrandModel.aggregate([
+        {
+          $match: {
+            createdAt: {
+              $gte: formDate,
+              $lte: toDate
+            }
+          }
+        },
         {
           $lookup: {
             from: ProductModel.collection.name,
@@ -40,17 +50,22 @@ class StatisticHandlers {
         },
       ]);
 
+      console.log('brandStatistic', brandStatistic);
+
       const totalUsersInMonth = await UserModel.find({
-        createdAt: {
-          $gte: new Date(new Date().getTime() - 30 * 24 * 60 * 60 * 1000),
-        },
+        // createdAt: {
+        //   $gte: new Date(new Date().getTime() - 30 * 24 * 60 * 60 * 1000),
+        // },
+        createdAt: { $gte: new Date(formDate).toISOString(), $lt: new Date(toDate).toISOString() }
+
       });
 
       const totalOrdersInMonth = await OrderModel.find({
         order_status: DONE,
-        createdAt: {
-          $gte: new Date(new Date().getTime() - 30 * 24 * 60 * 60 * 1000),
-        },
+        // createdAt: {
+        //   $gte: new Date(new Date().getTime() - 30 * 24 * 60 * 60 * 1000),
+        // },
+        createdAt: { $gte: new Date(formDate).toISOString(), $lt: new Date(toDate).toISOString() }
       });
 
       let totalAmountInMonth;
@@ -62,8 +77,8 @@ class StatisticHandlers {
 
         totalAmountInMonth = orderItems?.length
           ? orderItems.reduce((prev, cur) => {
-              return prev + cur.item_price * cur.quantity - (cur.score || 0);
-            }, 0)
+            return prev + cur.item_price * cur.quantity - (cur.score || 0);
+          }, 0)
           : 0;
       }
 

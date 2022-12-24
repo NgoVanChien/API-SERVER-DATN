@@ -151,6 +151,31 @@ class ProductHandlers {
     }
   }
 
+  async getAllProduct() {
+    try {
+      const result = await ProductModel.find();
+      console.log('result', result);
+      if (!result || result === 'null')
+        return {
+          status: ERROR,
+          response: new HttpException(400, 'Can not get all product!'),
+        };
+
+      return {
+        status: SUCCESS,
+        response: {
+          status: OK,
+          message: 'Get all product successfully!',
+          data: result,
+        },
+      };
+
+    } catch (error) {
+      return catchHandlerError(error);
+
+    }
+  }
+
   async getOneProduct(slug) {
     try {
       const result = await ProductModel.findOne({
@@ -185,6 +210,8 @@ class ProductHandlers {
       return catchHandlerError(error);
     }
   }
+
+
 }
 
 module.exports = new ProductHandlers();
