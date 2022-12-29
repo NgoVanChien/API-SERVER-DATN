@@ -1,12 +1,12 @@
 const dotenv = require("dotenv");
 const express = require("express");
-const database = require("./configs/database");
-const createServer = require("./helpers/create_server");
-const Logger = require("./helpers/logger");
-const createSocketConnections = require("./helpers/websocket_connection.js");
-const applyMiddlewares = require("./middlewares");
-const errorHandler = require("./middlewares/error_handler");
-const routes = require("./routes");
+const database = require("./src/configs/database");
+const createServer = require("./src/helpers/create_server");
+const Logger = require("./src/helpers/logger");
+const createSocketConnections = require("./src/helpers/websocket_connection.js");
+const applyMiddlewares = require("./src/middlewares");
+const errorHandler = require("./src/middlewares/error_handler");
+const routes = require("./src/routes");
 
 dotenv.config();
 database.connect();
