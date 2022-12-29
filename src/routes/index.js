@@ -49,12 +49,6 @@ const routes = (app) => {
 
   app.use(`${ENDPOINT}/messenger`, messengerRouter);
 
-
-
-
-
-
-
   app.post(`${ENDPOINT}/sign-in`, SignControllers.login);
   app.use(
     `${ENDPOINT}/statistic`,
